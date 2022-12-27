@@ -93,7 +93,7 @@ function MainScreen() {
     var anualCashFlowNumber = Number(anualCashFlow);
     var initialCostNumber = Number(initialCost);
 
-    if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCost)){
+    if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCostNumber)){
       var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/initialCostNumber)
       setRoi(roiNumber.toString())
     }
@@ -138,7 +138,7 @@ function MainScreen() {
   useEffect(() => {
     var grossRentNumber = Number(grossRent);
     var rentTaxNumber = Number(rentTax)
-    if(grossRentNumber && rentTaxNumber){
+    if(!Number.isNaN(grossRentNumber) && !Number.isNaN(rentTaxNumber)){
       setNetRent((grossRentNumber*(100-rentTaxNumber)/100).toString())
     }
   },[grossRent, rentTax])
@@ -150,7 +150,7 @@ function MainScreen() {
       var val = Number(amount)
       var housePriceNumber = Number(housePrice);
 
-      if (housePriceNumber){
+      if (!Number.isNaN(housePriceNumber)){
         if (val > housePriceNumber){
           val = housePriceNumber
         }
