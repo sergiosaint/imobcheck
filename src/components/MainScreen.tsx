@@ -77,7 +77,7 @@ function MainScreen() {
       setAnualCashFlow(RoundToTwoDecimalPlaces(anualCashFlowNumber).toString())
       setMonthlyCashFlow(RoundToTwoDecimalPlaces(monthlyCashFlowNumber).toString())
     }
-  })
+  },[monthlyCosts, monthlyBankPayment, anualCosts, netRent])
 
   useEffect(() => {
     var entryPaymentNumber = Number(entryPayment);
