@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a566e065-d69a-444e-b0d9-d18a3f6cfaea/deploy-status)](https://app.netlify.com/sites/checkrentabilidade/deploys) live demo in [checkrentabilidade.netlify.app/](https://checkrentabilidade.netlify.app/) 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
