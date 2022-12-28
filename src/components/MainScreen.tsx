@@ -341,7 +341,7 @@ function MainScreen() {
             </div>
           </form>
         </div>
-        <div className='side-by-side'>
+        <div className='input'>
           <label htmlFor='monthlyCashFlow'>Cash Flow Mensal</label>
           <input type='text'
                  className='form-control'
