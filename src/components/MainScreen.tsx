@@ -102,8 +102,8 @@ function MainScreen() {
   },[entryPayment, oneTimeCosts])
 
   useEffect(() => {
-    var anualCashFlowNumber = Number(anualCashFlow);
-    var initialCostNumber = Number(initialCost);
+    var anualCashFlowNumber = Number(anualCashFlow.replace("€", ""));
+    var initialCostNumber = Number(initialCost.replace("€", ""));
 
     if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCostNumber)){
       var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/initialCostNumber)
