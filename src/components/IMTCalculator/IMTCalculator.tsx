@@ -1,4 +1,4 @@
-enum Location {
+enum HouseLocation {
   PortugalContinental = 1,
   AcoresMadeira = 2
 }
@@ -37,17 +37,18 @@ function calculate(houseValue: number, bands: ITaxBand[]){
 }
 
 function calculateIMT (
-  houseLocation :Location,
+  houseLocation :HouseLocation,
   houseType :HouseType,
   houseValue :number) : number
   {
+    debugger
     if(houseType === HouseType.PredioRustico){
       return RoundToTwoDecimalPlaces(houseValue*0.05);
     }
 
     var bands: ITaxBand[] = []
     switch(houseLocation){
-      case Location.PortugalContinental:
+      case HouseLocation.PortugalContinental:
         switch(houseType){
           case HouseType.HabitacaoPropriaPermanente:
             bands = [
@@ -75,7 +76,7 @@ function calculateIMT (
         }
       break;
 
-      case Location.AcoresMadeira:
+      case HouseLocation.AcoresMadeira:
         switch(houseType){
           case HouseType.HabitacaoPropriaPermanente:
             bands = [
@@ -106,4 +107,4 @@ function calculateIMT (
   return RoundToTwoDecimalPlaces(calculate(houseValue, bands));
 }
 
-export default calculateIMT
+export {HouseLocation, HouseType, calculateIMT}

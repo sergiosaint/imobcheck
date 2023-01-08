@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { Form } from 'react-bootstrap';
 import '../MainScreen.css'
+import { calculateIMT, HouseLocation, HouseType } from './IMTCalculator/IMTCalculator';
 
 function RoundToTwoDecimalPlaces(num : number) : number{
   return Number(Math.round(Number(num + "e+2")) + "e-2");
@@ -32,6 +34,8 @@ function MainScreen() {
   const [monthlyCashFlow, setMonthlyCashFlow] = React.useState("0");
   const [initialCost, setInitialCost] = React.useState("0");
   const [roi, setRoi] = React.useState("0");
+  const [houseLocation, setHouseLocation] = React.useState(HouseLocation.PortugalContinental);
+  const [houseType, setHouseType] = React.useState(HouseType.HabitacaoPropriaPermanente);
   
 
   const onAmountChange = (e:any, set: any) => {
@@ -62,6 +66,14 @@ function MainScreen() {
     }
   };
 
+  const onChangeHouseType = (e:any) => {
+    setHouseType(Number(e.target.value))
+  };
+
+  const onChangeHouseLocation = (e:any) => {
+    setHouseLocation(Number(e.target.value))
+  };
+
   useEffect(() => {
     var monthlyCostsNumber = Number(monthlyCosts);
     var monthlyBankPaymentNumber = Number(monthlyBankPayment);
@@ -74,8 +86,8 @@ function MainScreen() {
        !Number.isNaN(netRentNumber)){
       var anualCashFlowNumber = netRentNumber*12 - (monthlyCostsNumber*12 + monthlyBankPaymentNumber*12 + anualCostsNumber);
       var monthlyCashFlowNumber = anualCashFlowNumber/12;
-      setAnualCashFlow(RoundToTwoDecimalPlaces(anualCashFlowNumber).toString())
-      setMonthlyCashFlow(RoundToTwoDecimalPlaces(monthlyCashFlowNumber).toString())
+      setAnualCashFlow(RoundToTwoDecimalPlaces(anualCashFlowNumber).toString()+"€")
+      setMonthlyCashFlow(RoundToTwoDecimalPlaces(monthlyCashFlowNumber).toString()+"€")
     }
   },[monthlyCosts, monthlyBankPayment, anualCosts, netRent])
 
@@ -85,7 +97,7 @@ function MainScreen() {
 
     if(!Number.isNaN(entryPaymentNumber) && !Number.isNaN(oneTimeCostsNumber)){
       var initialCostNumber = entryPaymentNumber + oneTimeCostsNumber;
-      setInitialCost(RoundToTwoDecimalPlaces(initialCostNumber).toString())
+      setInitialCost(RoundToTwoDecimalPlaces(initialCostNumber).toString()+"€")
     }
   },[entryPayment, oneTimeCosts])
 
@@ -95,7 +107,7 @@ function MainScreen() {
 
     if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCostNumber)){
       var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/initialCostNumber)
-      setRoi(roiNumber.toString())
+      setRoi(roiNumber.toString() + "%")
     }
   },[anualCashFlow, initialCost])
 
@@ -142,6 +154,10 @@ function MainScreen() {
       setNetRent((grossRentNumber*(100-rentTaxNumber)/100).toString())
     }
   },[grossRent, rentTax])
+
+  useEffect(() => {
+    
+  },[houseLocation, houseType])
 
   const onEntryPaymentChange = (e:any) => {
     const amount = e.target.value;
@@ -226,6 +242,19 @@ function MainScreen() {
                      value={anualCosts}
                      onChange={e => onAmountChange(e, setAnualCosts)}
               />
+
+              <label htmlFor='houseLocation'>Localização do imóvel</label>
+              <Form.Select name='houseLocation' onChange={(e) => onChangeHouseLocation(e)} value={houseLocation}>
+                <option value={HouseLocation.PortugalContinental}>Portugal Continental</option>
+                <option value={HouseLocation.AcoresMadeira}>Açores ou Madeira</option>
+              </Form.Select>
+
+              <label htmlFor='houseType'>Destino da habitação</label>
+              <Form.Select name='houseType' onChange={(e) => onChangeHouseType(e)} value={houseType}>
+                <option value={HouseType.HabitacaoPropriaPermanente}>Habitação própria e permanente</option>
+                <option value={HouseType.HabitacaoSecundariaOuArrendamento}>Habitação Secundária</option>
+                <option value={HouseType.PredioRustico}>Prédio rústico</option>
+              </Form.Select>
             </div>
           </form>
         </div>
@@ -371,6 +400,15 @@ function MainScreen() {
                  disabled={true}
                  value={roi}
           />
+        </div>
+
+        <div className='input'>
+          Custos burocráticos estimados:<br/>
+          {Number(debt) > 0 && <>Custos de avaliacao de crédito 400€<br/>Custo de escritura com crédito 700€ (no portal casa pronta)<br/></>}
+          {Number(debt) === 0 && <>Custo de escritura com capitais próprios 375€ (no portal casa pronta)<br/></>}
+          Valor de IMT {calculateIMT(houseLocation, houseType, Number(housePrice))}€<br/>
+          IS {RoundToTwoDecimalPlaces(Number(housePrice)*0.08)}€<br/>
+          Total = {calculateIMT(houseLocation, houseType, Number(housePrice)) + RoundToTwoDecimalPlaces(Number(housePrice)*0.08) + (Number(debt) > 0 ? 1100 : 375)}€<br/>
         </div>
       </>
   )
