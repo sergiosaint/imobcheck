@@ -407,8 +407,8 @@ function MainScreen() {
           {Number(debt) > 0 && <>Custos de avaliacao de crédito 400€<br/>Custo de escritura com crédito 700€ (no portal casa pronta)<br/></>}
           {Number(debt) === 0 && <>Custo de escritura com capitais próprios 375€ (no portal casa pronta)<br/></>}
           Valor de IMT {calculateIMT(houseLocation, houseType, Number(housePrice))}€<br/>
-          IS {RoundToTwoDecimalPlaces(Number(housePrice)*0.08)}€<br/>
-          Total = {calculateIMT(houseLocation, houseType, Number(housePrice)) + RoundToTwoDecimalPlaces(Number(housePrice)*0.08) + (Number(debt) > 0 ? 1100 : 375)}€<br/>
+          IS {RoundToTwoDecimalPlaces(Number(housePrice)*0.008)}€<br/>
+          Total = {calculateIMT(houseLocation, houseType, Number(housePrice)) + RoundToTwoDecimalPlaces(Number(housePrice)*0.008) + (Number(debt) > 0 ? 1100 : 375)}€<br/>
         </div>
       </>
   )
