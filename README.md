@@ -1,9 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a566e065-d69a-444e-b0d9-d18a3f6cfaea/deploy-status)](https://app.netlify.com/sites/checkrentabilidade/deploys) live demo in [checkrentabilidade.netlify.app/](https://checkrentabilidade.netlify.app/) 
 
-proximo passo, calcular IMT e IS automaticamente: https://www.reddit.com/r/literaciafinanceira/comments/zxegrc/quais_as_regras_oficiais_para_o_calculo_do_imt/
-A parte mais significativa do codigo já cá está, falta criar os imputs extra necessarios.
-
-App ficara valida para 2022...até junho de 2023 quando os valores forem actualizados de novo, suponho.
+Links uteis para ideias e para complementar: https://www.reddit.com/r/literaciafinanceira/comments/109fu8x/partilha_de_sitessimuladoresapps/
+Para Já o IMT está válido para 2023
 
 # Getting Started with Create React App
 
