@@ -41,7 +41,6 @@ function calculateIMT (
   houseType :HouseType,
   houseValue :number) : number
   {
-    debugger
     if(houseType === HouseType.PredioRustico){
       return RoundToTwoDecimalPlaces(houseValue*0.05);
     }

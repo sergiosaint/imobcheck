@@ -86,8 +86,8 @@ function MainScreen() {
        !Number.isNaN(netRentNumber)){
       var anualCashFlowNumber = netRentNumber*12 - (monthlyCostsNumber*12 + monthlyBankPaymentNumber*12 + anualCostsNumber);
       var monthlyCashFlowNumber = anualCashFlowNumber/12;
-      setAnualCashFlow(RoundToTwoDecimalPlaces(anualCashFlowNumber).toString()+"€")
-      setMonthlyCashFlow(RoundToTwoDecimalPlaces(monthlyCashFlowNumber).toString()+"€")
+      setAnualCashFlow(RoundToTwoDecimalPlaces(anualCashFlowNumber).toString())
+      setMonthlyCashFlow(RoundToTwoDecimalPlaces(monthlyCashFlowNumber).toString())
     }
   },[monthlyCosts, monthlyBankPayment, anualCosts, netRent])
 
@@ -97,17 +97,17 @@ function MainScreen() {
 
     if(!Number.isNaN(entryPaymentNumber) && !Number.isNaN(oneTimeCostsNumber)){
       var initialCostNumber = entryPaymentNumber + oneTimeCostsNumber;
-      setInitialCost(RoundToTwoDecimalPlaces(initialCostNumber).toString()+"€")
+      setInitialCost(RoundToTwoDecimalPlaces(initialCostNumber).toString())
     }
   },[entryPayment, oneTimeCosts])
 
   useEffect(() => {
-    var anualCashFlowNumber = Number(anualCashFlow.replace("€", ""));
-    var initialCostNumber = Number(initialCost.replace("€", ""));
+    var anualCashFlowNumber = Number(anualCashFlow);
+    var initialCostNumber = Number(initialCost);
 
     if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCostNumber)){
       var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/initialCostNumber)
-      setRoi(roiNumber.toString() + "%")
+      setRoi(roiNumber.toString())
     }
   },[anualCashFlow, initialCost])
 
@@ -190,58 +190,76 @@ function MainScreen() {
             <div className='form-group'>
 
               <label htmlFor='housePrice'>Valor de compra</label>
-              <input type='text'
-                     className='form-control'
-                     name='housePrice'
-                     value={housePrice}
-                     onChange={e => onAmountChange(e, setHousePrice)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='housePrice'
+                       value={housePrice}
+                       onChange={e => onAmountChange(e, setHousePrice)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
 
               <div>
                 <div className='side-by-side margin-right'>
-                <label htmlFor='entryPayment'>Valor de entrada</label>
-                <input type='text'
-                       className='form-control'
-                       name='entryPayment'
-                       value={entryPayment}
-                       onChange={e => onEntryPaymentChange(e)}
-                />
+                  <label htmlFor='entryPayment'>Valor de entrada</label>
+                  <div className="input-group">
+                    <input type='text'
+                           className='form-control'
+                           name='entryPayment'
+                           value={entryPayment}
+                           onChange={e => onEntryPaymentChange(e)}
+                    />
+                    <span className="input-group-text"> € </span>
+                  </div>
                 </div>
 
                 <div className='side-by-side'>
-                <label htmlFor='entryPaymentPercentage'>Percentagem de entrada</label>
-                <input type='text'
-                       className='form-control'
-                       name='entryPaymentPercentage'
-                       value={entryPaymentPercentage}
-                       onChange={e => onEntryPaymentPercentageChange(e)}
-                />
+                  <label htmlFor='entryPaymentPercentage'>Percentagem de entrada</label>
+                  <div className="input-group">
+                    <input type='text'
+                           className='form-control'
+                           name='entryPaymentPercentage'
+                           value={entryPaymentPercentage}
+                           onChange={e => onEntryPaymentPercentageChange(e)}
+                    />
+                    <span className="input-group-text"> % </span>
+                  </div>
                 </div>
               </div>
 
               <label htmlFor='oneTimeCosts'>Custos Burocráticos (IMT/Escritura/Avaliação)</label>
-              <input type='text'
-                     className='form-control'
-                     name='oneTimeCosts'
-                     value={oneTimeCosts}
-                     onChange={e => onAmountChange(e, setOneTimeCosts)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='oneTimeCosts'
+                       value={oneTimeCosts}
+                       onChange={e => onAmountChange(e, setOneTimeCosts)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
 
               <label htmlFor='monthlyCosts'>Custos Mensais (seguros/condominio)</label>
-              <input type='text'
-                     className='form-control'
-                     name='monthlyCosts'
-                     value={monthlyCosts}
-                     onChange={e => onAmountChange(e, setMonthlyCosts)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='monthlyCosts'
+                       value={monthlyCosts}
+                       onChange={e => onAmountChange(e, setMonthlyCosts)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
 
               <label htmlFor='anualCosts'>Custos Anuais (IMI/Manutenção)</label>
-              <input type='text'
-                     className='form-control'
-                     name='anualCosts'
-                     value={anualCosts}
-                     onChange={e => onAmountChange(e, setAnualCosts)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='anualCosts'
+                       value={anualCosts}
+                       onChange={e => onAmountChange(e, setAnualCosts)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
 
               <label htmlFor='houseLocation'>Localização do imóvel</label>
               <Form.Select name='houseLocation' onChange={(e) => onChangeHouseLocation(e)} value={houseLocation}>
@@ -262,38 +280,50 @@ function MainScreen() {
           <form className='demoForm'>
             <div className='form-group'>
               <label htmlFor='debt'>Valor em dívida</label>
-              <input type='text'
-                     className='form-control'
-                     name='debt'
-                     value={debt}
-                     disabled={true}
-                     onChange={e => onAmountChange(e, setDebt)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='debt'
+                       value={debt}
+                       disabled={true}
+                       onChange={e => onAmountChange(e, setDebt)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
 
              <label htmlFor='interest'>Taxa de juro anual</label>
-              <input type='text'
-                     className='form-control'
-                     name='interest'
-                     value={interest}
-                     onChange={e => onAmountChange4(e, setInterest)}
-             />
+             <div className="input-group">
+               <input type='text'
+                      className='form-control'
+                      name='interest'
+                      value={interest}
+                      onChange={e => onAmountChange4(e, setInterest)}
+               />
+               <span className="input-group-text"> % </span>
+             </div>
 
               <label htmlFor='numberOfPayments'>Prestações mensais em falta</label>
-              <input type='text'
-                     className='form-control'
-                     name='numberOfPayments'
-                     value={numberOfPayments}
-                     onChange={e => setNumberOfPayments(e.target.value)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='numberOfPayments'
+                       value={numberOfPayments}
+                       onChange={e => setNumberOfPayments(e.target.value)}
+                />
+                <span className="input-group-text"> # </span>
+              </div>
 
               <label htmlFor='monthlyBankPayment'>Prestação ao banco</label>
-              <input type='text'
-                     className='form-control'
-                     name='monthlyBankPayment'
-                     value={monthlyBankPayment}
-                     disabled={true}
-                     onChange={e => setMonthlyBankPayment(e.target.value)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='monthlyBankPayment'
+                       value={monthlyBankPayment}
+                       disabled={true}
+                       onChange={e => setMonthlyBankPayment(e.target.value)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
 
 {false &&
   <>
@@ -344,62 +374,85 @@ function MainScreen() {
           <form className='demoForm'>
             <div className='form-group'>
               <label htmlFor='grossRent'>Renda Bruta Mensal</label>
-              <input type='text'
-                     className='form-control'
-                     name='grossRent'
-                     value={grossRent}
-                    onChange={e => onAmountChange(e, setGrossRent)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='grossRent'
+                       value={grossRent}
+                       onChange={e => onAmountChange(e, setGrossRent)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
 
              <label htmlFor='interest'>Taxa de imposto sobre renda</label>
-              <input type='text'
-                     className='form-control'
-                     name='rentTax'
-                     value={rentTax}
-                     onChange={e => setRentTax(e.target.value)}
-             />
+             <div className="input-group">
+               <input type='text'
+                      className='form-control'
+                      name='rentTax'
+                      value={rentTax}
+                      onChange={e => setRentTax(e.target.value)}
+               />
+               <span className="input-group-text"> % </span>
+             </div>
 
               <label htmlFor='numberOfPayments'>Renda liquida Mensal</label>
-              <input type='text'
-                     className='form-control'
-                     name='netRent'
-                     disabled={true}
-                     value={netRent}
-                     onChange={e => setNetRent(e.target.value)}
-              />
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='netRent'
+                       disabled={true}
+                       value={netRent}
+                       onChange={e => setNetRent(e.target.value)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
             </div>
           </form>
         </div>
         <div className='input'>
           <label htmlFor='monthlyCashFlow'>Cash Flow Mensal</label>
-          <input type='text'
-                 className='form-control'
-                 name='monthlyCashFlow'
-                 disabled={true}
-                 value={monthlyCashFlow}
-          />
+          <div className="input-group">
+            <input type='text'
+                   className='form-control'
+                   name='monthlyCashFlow'
+                   disabled={true}
+                   value={monthlyCashFlow}
+            />
+            <span className="input-group-text"> € </span>
+          </div>
 
           <label htmlFor='anualCashFlow'>Cash Flow Anual</label>
-          <input type='text'
-                 className='form-control'
-                 name='anualCashFlow'
-                 disabled={true}
-                 value={anualCashFlow}
-          />
+          <div className="input-group">
+            <input type='text'
+                   className='form-control'
+                   name='anualCashFlow'
+                   disabled={true}
+                   value={anualCashFlow}
+            />
+            <span className="input-group-text"> € </span>
+          </div>
+
           <label htmlFor='initialCost'>Investimento Inicial Total</label>
+          <div className="input-group">
           <input type='text'
                  className='form-control'
                  name='initialCost'
                  disabled={true}
                  value={initialCost}
           />
+          <span className="input-group-text"> € </span>
+          </div>
+
           <label htmlFor='roi'>Retorno de investimento anual</label>
-          <input type='text'
-                 className='form-control'
-                 name='roi'
-                 disabled={true}
-                 value={roi}
-          />
+          <div className="input-group">
+            <input type='text'
+                   className='form-control'
+                   name='roi'
+                   disabled={true}
+                   value={roi}
+            />
+            <span className="input-group-text"> % </span>
+          </div>
         </div>
 
         <div className='input'>
