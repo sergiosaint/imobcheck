@@ -18,6 +18,7 @@ function MainScreen() {
   const [oneTimeCosts, setOneTimeCosts] = React.useState("0");
   const [monthlyCosts, setMonthlyCosts] = React.useState("0");
   const [monthlyBankPayment, setMonthlyBankPayment] = React.useState("0");
+  const [monthlyBankRepayment, setMonthlyBankRepayment] = React.useState("0");
   const [anualCosts, setAnualCosts] = React.useState("0");
   const [debt, setDebt] = React.useState("0");
   const [interest, setInterest] = React.useState("4.2");
@@ -34,6 +35,7 @@ function MainScreen() {
   const [monthlyCashFlow, setMonthlyCashFlow] = React.useState("0");
   const [initialCost, setInitialCost] = React.useState("0");
   const [roi, setRoi] = React.useState("0");
+  const [repRoi, setRepRoi] = React.useState("0");
   const [houseLocation, setHouseLocation] = React.useState(HouseLocation.PortugalContinental);
   const [houseType, setHouseType] = React.useState(HouseType.HabitacaoPropriaPermanente);
   
@@ -108,8 +110,10 @@ function MainScreen() {
     if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCostNumber)){
       var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/initialCostNumber)
       setRoi(roiNumber.toString())
+      var repRoiNumber = RoundToTwoDecimalPlaces((anualCashFlowNumber + RoundToTwoDecimalPlaces(Number(monthlyBankRepayment)*12)) *100/ initialCostNumber)
+      setRepRoi(repRoiNumber.toString())
     }
-  },[anualCashFlow, initialCost])
+  },[anualCashFlow, initialCost, monthlyBankRepayment])
 
   
 
@@ -135,6 +139,7 @@ function MainScreen() {
     if(!Number.isNaN(debtNumber) && !Number.isNaN(interestNumber) && !Number.isNaN(numberOfPaymentsNumber)){
       var bankPayment = calculateRepaymentValue(debtNumber, interestNumber/100/12, numberOfPaymentsNumber)
       setMonthlyBankPayment(RoundToTwoDecimalPlaces(bankPayment).toString());
+      setMonthlyBankRepayment(RoundToTwoDecimalPlaces(bankPayment - RoundToTwoDecimalPlaces(debtNumber*(interestNumber/100/12))).toString());
     }
   },[debt, interest, numberOfPayments])
 
@@ -325,6 +330,18 @@ function MainScreen() {
                 <span className="input-group-text"> € </span>
               </div>
 
+              <label htmlFor='monthlyBankRepayment'>Divida amortizada mensalmente</label>
+              <div className="input-group">
+                <input type='text'
+                       className='form-control'
+                       name='monthlyBankRepayment'
+                       value={monthlyBankRepayment}
+                       disabled={true}
+                       onChange={e => setMonthlyBankRepayment(e.target.value)}
+                />
+                <span className="input-group-text"> € </span>
+              </div>
+
 {false &&
   <>
               <label htmlFor='repaymentValue'>Valor a despender</label>
@@ -450,6 +467,17 @@ function MainScreen() {
                    name='roi'
                    disabled={true}
                    value={roi}
+            />
+            <span className="input-group-text"> % </span>
+          </div>
+
+          <label htmlFor='repRoi'>ROI com amortização</label>
+          <div className="input-group">
+            <input type='text'
+                   className='form-control'
+                   name='repRoi'
+                   disabled={true}
+                   value={repRoi}
             />
             <span className="input-group-text"> % </span>
           </div>
