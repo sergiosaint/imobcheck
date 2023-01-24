@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import '../MainScreen.css'
 import { calculateIMT, HouseLocation, HouseType } from './IMTCalculator/IMTCalculator';
 
@@ -17,8 +17,10 @@ function MainScreen() {
   const [entryPaymentPercentage, setEntryPaymentPercentage] = React.useState("0");
   const [oneTimeCosts, setOneTimeCosts] = React.useState("0");
   const [monthlyCosts, setMonthlyCosts] = React.useState("0");
+  const [condominiumCosts, setCondominiumCosts] = React.useState("0");
   const [monthlyBankPayment, setMonthlyBankPayment] = React.useState("0");
   const [monthlyBankRepayment, setMonthlyBankRepayment] = React.useState("0");
+  const [imiCosts, setImiCosts] = React.useState("0");
   const [anualCosts, setAnualCosts] = React.useState("0");
   const [debt, setDebt] = React.useState("0");
   const [interest, setInterest] = React.useState("4.2");
@@ -59,11 +61,20 @@ function MainScreen() {
   const onEntryPaymentPercentageChange = (e:any) => {
     const amount = e.target.value;
 
+    
+
     if (!amount || amount.match(/^\d{1,}(\.\d{0,4})?$/)) {
       if(Number(amount) > 100){
         setEntryPaymentPercentage("100")
+        setEntryPayment(housePrice)
       }else{
         setEntryPaymentPercentage(amount);
+
+        var housePriceNumber = Number(housePrice);
+        var entryPaymentPercentageNumber = Number(amount)
+        if(!Number.isNaN(housePriceNumber) && !Number.isNaN(entryPaymentPercentageNumber)){
+          setEntryPayment((housePriceNumber*entryPaymentPercentageNumber/100).toString())
+        }
       }
     }
   };
@@ -81,17 +92,23 @@ function MainScreen() {
     var monthlyBankPaymentNumber = Number(monthlyBankPayment);
     var anualCostsNumber = Number(anualCosts);
     var netRentNumber = Number(netRent);
+    var imi = Number(imiCosts);
+    var condominium = Number(condominiumCosts);
+
+    if (Number.isNaN(imi)) { imi = 0 }
+    if (Number.isNaN(condominium)) { condominium = 0 }
+
 
     if(!Number.isNaN(monthlyCostsNumber) &&
        !Number.isNaN(monthlyBankPaymentNumber) && 
        !Number.isNaN(anualCostsNumber) &&
        !Number.isNaN(netRentNumber)){
-      var anualCashFlowNumber = netRentNumber*12 - (monthlyCostsNumber*12 + monthlyBankPaymentNumber*12 + anualCostsNumber);
+      var anualCashFlowNumber = netRentNumber*12 - ((monthlyCostsNumber+condominium+monthlyBankPaymentNumber)*12 + anualCostsNumber + imi);
       var monthlyCashFlowNumber = anualCashFlowNumber/12;
       setAnualCashFlow(RoundToTwoDecimalPlaces(anualCashFlowNumber).toString())
       setMonthlyCashFlow(RoundToTwoDecimalPlaces(monthlyCashFlowNumber).toString())
     }
-  },[monthlyCosts, monthlyBankPayment, anualCosts, netRent])
+  },[monthlyCosts, monthlyBankPayment, anualCosts, netRent, imiCosts, condominiumCosts])
 
   useEffect(() => {
     var entryPaymentNumber = Number(entryPayment);
@@ -144,21 +161,19 @@ function MainScreen() {
   },[debt, interest, numberOfPayments])
 
   useEffect(() => {
-    var housePriceNumber = Number(housePrice);
-    var entryPaymentPercentageNumber = Number(entryPaymentPercentage)
-    if(!Number.isNaN(housePriceNumber) && !Number.isNaN(entryPaymentPercentageNumber)){
-      setEntryPayment((housePriceNumber*entryPaymentPercentageNumber/100).toString())
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[entryPaymentPercentage])
-
-  useEffect(() => {
     var grossRentNumber = Number(grossRent);
-    var rentTaxNumber = Number(rentTax)
+    var rentTaxNumber = Number(rentTax);
+    var imi = Number(imiCosts);
+    var condominium = Number(condominiumCosts);
     if(!Number.isNaN(grossRentNumber) && !Number.isNaN(rentTaxNumber)){
-      setNetRent((grossRentNumber*(100-rentTaxNumber)/100).toString())
+      if (Number.isNaN(imi)) { imi = 0 }
+      if (Number.isNaN(condominium)) { condominium = 0 }
+
+      debugger
+      var taxes = (((grossRentNumber-condominium)*12)-imi)*(rentTaxNumber/100)
+      setNetRent(RoundToTwoDecimalPlaces(grossRentNumber-(taxes/12)).toString())
     }
-  },[grossRent, rentTax])
+  },[grossRent, rentTax, imiCosts, condominiumCosts])
 
   useEffect(() => {
     
@@ -178,6 +193,7 @@ function MainScreen() {
       }
 
       setEntryPayment(val.toString());
+      setEntryPaymentPercentage((val*100/housePriceNumber).toString())
     }
   };
 
@@ -233,7 +249,7 @@ function MainScreen() {
                 </div>
               </div>
 
-              <label htmlFor='oneTimeCosts'>Custos Burocráticos (IMT/Escritura/Avaliação)</label>
+              <label htmlFor='oneTimeCosts'>Custos Burocráticos (IMT/IS/Escritura/Crédito)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -244,7 +260,7 @@ function MainScreen() {
                 <span className="input-group-text"> € </span>
               </div>
 
-              <label htmlFor='monthlyCosts'>Custos Mensais (seguros/condominio)</label>
+              <label htmlFor='monthlyCosts'>Custos Mensais (seguros)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -254,8 +270,50 @@ function MainScreen() {
                 />
                 <span className="input-group-text"> € </span>
               </div>
+              
+              <OverlayTrigger
+                  overlay={<Tooltip id="button-tooltip">
+                  O Custo anual do condominio {Number.isNaN(Number(condominiumCosts)) ? "" : "(" + RoundToTwoDecimalPlaces(Number(condominiumCosts)*12) + ")"} deve ser declarado no anexo F da declaração de IRS para abater nos lucros das rendas e pagar menos impostos.
+                </Tooltip>}
+                  placement="top"
+                  delay={{ show: 250, hide: 300 }}
+              >
+                <div>
+                  <label htmlFor='condominiumCosts'>Custo mensal do condominio</label>
+                  <div className="input-group">
+                    <input type='text'
+                           className='form-control'
+                           name='condominiumCosts'
+                           value={condominiumCosts}
+                           onChange={e => onAmountChange(e, setCondominiumCosts)}
+                    />
+                    <span className="input-group-text"> € </span>
+                  </div>
+                </div>
+              </OverlayTrigger>
 
-              <label htmlFor='anualCosts'>Custos Anuais (IMI/Manutenção)</label>
+              <OverlayTrigger
+                  overlay={<Tooltip id="button-tooltip">
+                  O IMI deve ser declarado no anexo F da declaração de IRS para abater nos lucros das rendas e pagar menos impostos.
+                </Tooltip>}
+                  placement="top"
+                  delay={{ show: 250, hide: 300 }}
+              >
+                <div>
+                  <label htmlFor='imiCosts'>Custo do IMI</label>
+                  <div className="input-group">
+                    <input type='text'
+                           className='form-control'
+                           name='imiCosts'
+                           value={imiCosts}
+                           onChange={e => onAmountChange(e, setImiCosts)}
+                    />
+                    <span className="input-group-text"> € </span>
+                  </div>
+                </div>
+              </OverlayTrigger>
+
+              <label htmlFor='anualCosts'>Custos Anuais (Manutenção/Desocupação)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
