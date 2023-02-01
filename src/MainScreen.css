@@ -11,12 +11,32 @@
   margin-right: 20px;
 }
 
-.input {
+.roundedBox {
   float: left;
   background-color: aliceblue;
   border-radius: 15px;
   padding: 20px;
   margin: 20px;
+}
+
+.settings {
+ 
+}
+
+.smallWidth{
+  width: 185px;
+}
+
+.credit {
+  width: 270px;
+}
+
+.cashFlow {
+  width: 260px;
+}
+
+.rents {
+  width: 250px;
 }
 
 .results {
@@ -39,5 +59,9 @@
 
 .input-group-text {
   width: 38px;
+}
+
+.labelSpacing {
+  padding-top: 5px;
 }
 

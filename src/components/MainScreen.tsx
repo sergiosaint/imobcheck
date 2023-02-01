@@ -219,7 +219,7 @@ function MainScreen() {
       <>
         <h2 className='title'>Calculador de Rentabilidade de Investimento Imobiliário</h2>
 
-        <div className='input'>
+        <div className='roundedBox settings'>
           <form className='demoForm'>
             <div className='form-group'>
 
@@ -234,9 +234,9 @@ function MainScreen() {
                 <span className="input-group-text"> € </span>
               </div>
 
-              <div>
-                <div className='side-by-side margin-right'>
-                  <label htmlFor='entryPayment'>Valor de entrada</label>
+              <div className="labelSpacing">
+                <div className='side-by-side margin-right smallWidth'>
+                  <label htmlFor='entryPayment labelSpacing'>Valor de entrada</label>
                   <div className="input-group">
                     <input type='text'
                            className='form-control'
@@ -248,8 +248,8 @@ function MainScreen() {
                   </div>
                 </div>
 
-                <div className='side-by-side'>
-                  <label htmlFor='entryPaymentPercentage'>Percentagem de entrada</label>
+                <div className='side-by-side smallWidth'>
+                  <label htmlFor='entryPaymentPercentage labelSpacing'>Percentagem de entrada</label>
                   <div className="input-group">
                     <input type='text'
                            className='form-control'
@@ -262,7 +262,8 @@ function MainScreen() {
                 </div>
               </div>
 
-              <label htmlFor='oneTimeCosts'>Custos Burocráticos (IMT/IS/Escritura/Crédito)</label>
+              <div className="labelSpacing">
+              <label htmlFor='oneTimeCosts labelSpacing'>Custos Burocráticos (IMT/IS/Escritura/Crédito)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -272,8 +273,10 @@ function MainScreen() {
                 />
                 <span className="input-group-text"> € </span>
               </div>
+              </div>
 
-              <label htmlFor='monthlyCosts'>Custos Mensais (seguros)</label>
+              <div className="labelSpacing">
+              <label htmlFor='monthlyCosts labelSpacing'>Custos Mensais (seguros)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -283,6 +286,7 @@ function MainScreen() {
                 />
                 <span className="input-group-text"> € </span>
               </div>
+              </div>
               
               <OverlayTrigger
                   overlay={<Tooltip id="button-tooltip">
@@ -291,7 +295,7 @@ function MainScreen() {
                   placement="top"
                   delay={{ show: 250, hide: 300 }}
               >
-                <div>
+                <div className="labelSpacing">
                   <label htmlFor='condominiumCosts'>Custo mensal do condominio</label>
                   <div className="input-group">
                     <input type='text'
@@ -312,7 +316,7 @@ function MainScreen() {
                   placement="top"
                   delay={{ show: 250, hide: 300 }}
               >
-                <div>
+                <div className="labelSpacing">
                   <label htmlFor='imiCosts'>Custo do IMI</label>
                   <div className="input-group">
                     <input type='text'
@@ -326,7 +330,8 @@ function MainScreen() {
                 </div>
               </OverlayTrigger>
 
-              <label htmlFor='anualCosts'>Custos Anuais (Manutenção/Desocupação)</label>
+              <div className="labelSpacing">
+              <label htmlFor='anualCosts labelSpacing'>Custos Anuais (Manutenção/Desocupação)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -336,23 +341,28 @@ function MainScreen() {
                 />
                 <span className="input-group-text"> € </span>
               </div>
+              </div>
 
+              <div className="labelSpacing">
               <label htmlFor='houseLocation'>Localização do imóvel</label>
               <Form.Select name='houseLocation' onChange={(e) => onChangeHouseLocation(e)} value={houseLocation}>
                 <option value={HouseLocation.PortugalContinental}>Portugal Continental</option>
                 <option value={HouseLocation.AcoresMadeira}>Açores ou Madeira</option>
               </Form.Select>
+              </div>
 
-              <label htmlFor='houseType'>Destino da habitação</label>
+              <div className="labelSpacing">
+              <label htmlFor='houseType labelSpacing'>Destino da habitação</label>
               <Form.Select name='houseType' onChange={(e) => onChangeHouseType(e)} value={houseType}>
                 <option value={HouseType.HabitacaoPropriaPermanente}>Habitação própria e permanente</option>
                 <option value={HouseType.HabitacaoSecundariaOuArrendamento}>Habitação Secundária</option>
                 <option value={HouseType.PredioRustico}>Prédio rústico</option>
               </Form.Select>
+              </div>
             </div>
           </form>
         </div>
-        <div className='input'>
+        <div className='roundedBox credit'>
           <form className='demoForm'>
             <div className='form-group'>
               <label htmlFor='debt'>Valor em dívida</label>
@@ -367,6 +377,7 @@ function MainScreen() {
                 <span className="input-group-text"> € </span>
               </div>
 
+             <div className="labelSpacing">
              <label htmlFor='interest'>Taxa de juro anual</label>
              <div className="input-group">
                <input type='text'
@@ -377,7 +388,9 @@ function MainScreen() {
                />
                <span className="input-group-text"> % </span>
              </div>
+             </div>
 
+              <div className="labelSpacing">
               <label htmlFor='numberOfPayments'>Prestações mensais em falta</label>
               <div className="input-group">
                 <input type='text'
@@ -388,7 +401,9 @@ function MainScreen() {
                 />
                 <span className="input-group-text"> # </span>
               </div>
+              </div>
 
+              <div className="labelSpacing">
               <label htmlFor='monthlyBankPayment'>Prestação ao banco</label>
               <div className="input-group">
                 <input type='text'
@@ -400,17 +415,20 @@ function MainScreen() {
                 />
                 <span className="input-group-text"> € </span>
               </div>
+              </div>
 
-              <label htmlFor='monthlyBankRepayment'>Divida amortizada mensalmente</label>
-              <div className="input-group">
-                <input type='text'
-                       className='form-control'
-                       name='monthlyBankRepayment'
-                       value={monthlyBankRepayment}
-                       disabled={true}
-                       onChange={e => setMonthlyBankRepayment(e.target.value)}
-                />
-                <span className="input-group-text"> € </span>
+              <div className="labelSpacing">
+                <label htmlFor='monthlyBankRepayment'>Divida amortizada mensalmente</label>
+                <div className="input-group">
+                  <input type='text'
+                         className='form-control'
+                         name='monthlyBankRepayment'
+                         value={monthlyBankRepayment}
+                         disabled={true}
+                         onChange={e => setMonthlyBankRepayment(e.target.value)}
+                  />
+                  <span className="input-group-text"> € </span>
+                </div>
               </div>
 
 {false &&
@@ -458,7 +476,7 @@ function MainScreen() {
             </div>
           </form>
         </div>
-        <div className='input'>
+        <div className='roundedBox rents'>
           <form className='demoForm'>
             <div className='form-group'>
               <label htmlFor='grossRent'>Renda Bruta Mensal</label>
@@ -497,7 +515,7 @@ function MainScreen() {
             </div>
           </form>
         </div>
-        <div className='input'>
+        <div className='roundedBox cashFlow'>
           <label htmlFor='monthlyCashFlow'>Cash Flow Mensal</label>
           <div className="input-group">
             <input type='text'
@@ -554,7 +572,7 @@ function MainScreen() {
           </div>
         </div>
 
-        <div className='input'>
+        <div className='roundedBox'>
           Custos burocráticos estimados:<br/>
           {Number(debt) > 0 && <>Custos de avaliacao de crédito 400€<br/>Custo de escritura com crédito 700€ (no portal casa pronta)<br/></>}
           {Number(debt) === 0 && <>Custo de escritura com capitais próprios 375€ (no portal casa pronta)<br/></>}
