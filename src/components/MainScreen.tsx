@@ -116,7 +116,7 @@ function MainScreen() {
 
       setMonthlyCashFlowAmort(RoundToTwoDecimalPlaces(monthlyCashFlowNumber + monthlyBankRepaymentNumber).toString())
     }
-  },[monthlyCosts, monthlyBankPayment, anualCosts, netRent, imiCosts, condominiumCosts])
+  },[monthlyCosts, monthlyBankPayment, monthlyBankRepayment, anualCosts, netRent, imiCosts, condominiumCosts])
 
   useEffect(() => {
     var entryPaymentNumber = Number(entryPayment);
