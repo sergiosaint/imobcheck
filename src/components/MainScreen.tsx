@@ -35,6 +35,7 @@ function MainScreen() {
   const [rentTax, setRentTax] = React.useState("28");
   const [anualCashFlow, setAnualCashFlow] = React.useState("0");
   const [monthlyCashFlow, setMonthlyCashFlow] = React.useState("0");
+  const [monthlyCashFlowAmort, setMonthlyCashFlowAmort] = React.useState("0");
   const [initialCost, setInitialCost] = React.useState("0");
   const [roi, setRoi] = React.useState("0");
   const [repRoi, setRepRoi] = React.useState("0");
@@ -107,6 +108,13 @@ function MainScreen() {
       var monthlyCashFlowNumber = anualCashFlowNumber/12;
       setAnualCashFlow(RoundToTwoDecimalPlaces(anualCashFlowNumber).toString())
       setMonthlyCashFlow(RoundToTwoDecimalPlaces(monthlyCashFlowNumber).toString())
+
+      let monthlyBankRepaymentNumber = Number(monthlyBankRepayment);
+      if(Number.isNaN(monthlyBankRepayment)){
+        monthlyBankRepaymentNumber = 0;
+      }
+
+      setMonthlyCashFlowAmort(RoundToTwoDecimalPlaces(monthlyCashFlowNumber + monthlyBankRepaymentNumber).toString())
     }
   },[monthlyCosts, monthlyBankPayment, anualCosts, netRent, imiCosts, condominiumCosts])
 
@@ -526,6 +534,19 @@ function MainScreen() {
             />
             <span className="input-group-text"> € </span>
           </div>
+
+          <label htmlFor='monthlyCashFlowAmort'>Cash Flow Mensal + amortização</label>
+          <div className="input-group">
+            <input type='text'
+                   className='form-control'
+                   name='monthlyCashFlowAmort'
+                   disabled={true}
+                   value={monthlyCashFlowAmort}
+            />
+            <span className="input-group-text"> € </span>
+          </div>
+
+          
 
           <label htmlFor='anualCashFlow'>Cash Flow Anual</label>
           <div className="input-group">
