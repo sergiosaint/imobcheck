@@ -177,22 +177,17 @@ function MainScreen() {
       if (Number.isNaN(imi)) { imi = 0 }
       if (Number.isNaN(condominium)) { condominium = 0 }
 
-      debugger
       var taxes = 0
       var netRent = grossRentNumber
       if(rentTaxNumber > 0) {
         taxes = (((grossRentNumber-condominium)*12)-imi)*(rentTaxNumber/100)
-        
       }
 
       if (taxes > 0){
         netRent = grossRentNumber-(taxes/12)
       }
-      if(netRent >= 0){
-        setNetRent(RoundToTwoDecimalPlaces(netRent).toString())
-      }else{
-        setNetRent((-RoundToTwoDecimalPlaces(netRent)).toString())
-      }
+      
+      setNetRent(RoundToTwoDecimalPlaces(netRent).toString())
     }
   },[grossRent, rentTax, imiCosts, condominiumCosts])
 
