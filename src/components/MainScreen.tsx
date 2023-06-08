@@ -133,9 +133,9 @@ function MainScreen() {
     var initialCostNumber = Number(initialCost);
 
     if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCostNumber)){
-      var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/(initialCostNumber+RoundToTwoDecimalPlaces(Number(monthlyBankPayment)*12)))
+      var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/initialCostNumber)
       setRoi(roiNumber.toString())
-      var repRoiNumber = RoundToTwoDecimalPlaces((anualCashFlowNumber + RoundToTwoDecimalPlaces(Number(monthlyBankRepayment)*12)) *100/ (initialCostNumber+RoundToTwoDecimalPlaces(Number(monthlyBankPayment)*12)))
+      var repRoiNumber = RoundToTwoDecimalPlaces((anualCashFlowNumber + RoundToTwoDecimalPlaces(Number(monthlyBankRepayment)*12)) *100/ initialCostNumber)
       setRepRoi(repRoiNumber.toString())
     }
   },[anualCashFlow, initialCost, monthlyBankRepayment])
