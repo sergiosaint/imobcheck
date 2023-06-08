@@ -133,9 +133,9 @@ function MainScreen() {
     var initialCostNumber = Number(initialCost);
 
     if(!Number.isNaN(anualCashFlowNumber) && !Number.isNaN(initialCostNumber)){
-      var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/initialCostNumber)
+      var roiNumber = RoundToTwoDecimalPlaces(anualCashFlowNumber*100/(initialCostNumber+RoundToTwoDecimalPlaces(Number(monthlyBankPayment)*12)))
       setRoi(roiNumber.toString())
-      var repRoiNumber = RoundToTwoDecimalPlaces((anualCashFlowNumber + RoundToTwoDecimalPlaces(Number(monthlyBankRepayment)*12)) *100/ initialCostNumber)
+      var repRoiNumber = RoundToTwoDecimalPlaces((anualCashFlowNumber + RoundToTwoDecimalPlaces(Number(monthlyBankRepayment)*12)) *100/ (initialCostNumber+RoundToTwoDecimalPlaces(Number(monthlyBankPayment)*12)))
       setRepRoi(repRoiNumber.toString())
     }
   },[anualCashFlow, initialCost, monthlyBankRepayment])
@@ -493,7 +493,7 @@ function MainScreen() {
                 <span className="input-group-text"> € </span>
               </div>
 
-             <label htmlFor='interest'>Taxa de imposto sobre renda</label>
+             <label htmlFor='rentTax'>Taxa de imposto sobre renda</label>
              <div className="input-group">
                <input type='text'
                       className='form-control'
@@ -504,7 +504,7 @@ function MainScreen() {
                <span className="input-group-text"> % </span>
              </div>
 
-              <label htmlFor='numberOfPayments'>Renda liquida Mensal</label>
+              <label htmlFor='netRent'>Renda liquida Mensal</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
