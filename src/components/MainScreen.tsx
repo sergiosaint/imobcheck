@@ -11,8 +11,17 @@ function calculateRepaymentValue(debt:number, montlyInterest:number, numberOfPay
   return (debt / ((1-Math.pow(1+(montlyInterest), -numberOfPayments))/montlyInterest));
 }
 
+const readEnum = (name:string, defaultValue:any) => {
+  const value = localStorage.getItem(name);
+  if(value){
+    return value as typeof defaultValue
+  }else{
+    return defaultValue;
+  }
+};
+
 function MainScreen() {
-  const [housePrice, setHousePrice] = React.useState("0");
+  const [housePrice, setHousePrice] = React.useState(localStorage.getItem('housePrice') || "0");
   const [entryPayment, setEntryPayment] = React.useState("0");
   const [entryPaymentPercentage, setEntryPaymentPercentage] = React.useState("0");
   const [oneTimeCosts, setOneTimeCosts] = React.useState("0");
@@ -23,10 +32,10 @@ function MainScreen() {
   const [imiCosts, setImiCosts] = React.useState("0");
   const [anualCosts, setAnualCosts] = React.useState("0");
   const [debt, setDebt] = React.useState("0");
-  const [interest, setInterest] = React.useState("4.2");
+  const [interest, setInterest] = React.useState(localStorage.getItem('interest') || "4.3");
   const [repaymentValue, setRepaymentValue] = React.useState("0");
   const [repaymentTax, setRepaymentTax] = React.useState("0.5");
-  const [numberOfPayments, setNumberOfPayments] = React.useState("420");
+  const [numberOfPayments, setNumberOfPayments] = React.useState(localStorage.getItem('numberOfPayments') || "420");
   const [repaymentEveryXMonths, setRepaymentEveryXMonths] = React.useState("0");
   const [startMonth, setStartMonth] = React.useState("0");
   const [useSavings, setUseSavings] = React.useState(false);
@@ -39,9 +48,8 @@ function MainScreen() {
   const [initialCost, setInitialCost] = React.useState("0");
   const [roi, setRoi] = React.useState("0");
   const [repRoi, setRepRoi] = React.useState("0");
-  const [houseLocation, setHouseLocation] = React.useState(HouseLocation.PortugalContinental);
-  const [houseType, setHouseType] = React.useState(HouseType.HabitacaoPropriaPermanente);
-  
+  const [houseLocation, setHouseLocation] = React.useState(readEnum('houseLocation',HouseLocation.PortugalContinental));
+  const [houseType, setHouseType] = React.useState(readEnum('houseType', HouseType.HabitacaoPropriaPermanente));
 
   const onAmountChange = (e:any, set: any) => {
     const amount = e.target.value;
@@ -82,10 +90,12 @@ function MainScreen() {
 
   const onChangeHouseType = (e:any) => {
     setHouseType(Number(e.target.value))
+    localStorage.setItem('houseType', e.target.value)
   };
 
   const onChangeHouseLocation = (e:any) => {
     setHouseLocation(Number(e.target.value))
+    localStorage.setItem('houseLocation', e.target.value)
   };
 
   useEffect(() => {
@@ -160,6 +170,8 @@ function MainScreen() {
       setDebt(debtNumber.toString())
       setEntryPaymentPercentage((entryPaymentNumber*100/housePriceNumber).toString())
     }
+
+    localStorage.setItem('housePrice', housePrice)
   },[housePrice, entryPayment])
 
   useEffect(() => {
@@ -172,6 +184,9 @@ function MainScreen() {
       setMonthlyBankPayment(RoundToTwoDecimalPlaces(bankPayment).toString());
       setMonthlyBankRepayment(RoundToTwoDecimalPlaces(bankPayment - RoundToTwoDecimalPlaces(debtNumber*(interestNumber/100/12))).toString());
     }
+
+    localStorage.setItem('interest', interest)
+    localStorage.setItem('numberOfPayments', numberOfPayments)
   },[debt, interest, numberOfPayments])
 
   useEffect(() => {
