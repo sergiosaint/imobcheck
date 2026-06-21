@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import '../MainScreen.css';
+import '../MainScreen.css'
 import { calculateIMT, HouseLocation, HouseType } from './IMTCalculator/IMTCalculator';
 
 function RoundToTwoDecimalPlaces(num : number) : number{
