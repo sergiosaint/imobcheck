@@ -14,7 +14,7 @@ function calculateRepaymentValue(debt:number, montlyInterest:number, numberOfPay
 const readEnum = (name:string, defaultValue:any) => {
   const value = localStorage.getItem(name);
   if(value){
-    return value as typeof defaultValue
+    return Number(value) as typeof defaultValue
   }else{
     return defaultValue;
   }
@@ -51,7 +51,7 @@ function MainScreen() {
   const [houseLocation, setHouseLocation] = React.useState(readEnum('houseLocation',HouseLocation.PortugalContinental));
   const [houseType, setHouseType] = React.useState(readEnum('houseType', HouseType.HabitacaoPropriaPermanente));
 
-  const onAmountChange = (e:any, set: any) => {
+  const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>, set: React.Dispatch<React.SetStateAction<string>>) => {
     const amount = e.target.value;
 
     if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
@@ -59,7 +59,7 @@ function MainScreen() {
     }
   };
 
-  const onAmountChange4 = (e:any, set: any) => {
+  const onAmountChange4 = (e: React.ChangeEvent<HTMLInputElement>, set: React.Dispatch<React.SetStateAction<string>>) => {
     const amount = e.target.value;
 
     if (!amount || amount.match(/^\d{1,}(\.\d{0,4})?$/)) {
@@ -67,7 +67,7 @@ function MainScreen() {
     }
   };
 
-  const onEntryPaymentPercentageChange = (e:any) => {
+  const onEntryPaymentPercentageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const amount = e.target.value;
 
     
@@ -88,12 +88,12 @@ function MainScreen() {
     }
   };
 
-  const onChangeHouseType = (e:any) => {
+  const onChangeHouseType = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setHouseType(Number(e.target.value))
     localStorage.setItem('houseType', e.target.value)
   };
 
-  const onChangeHouseLocation = (e:any) => {
+  const onChangeHouseLocation = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setHouseLocation(Number(e.target.value))
     localStorage.setItem('houseLocation', e.target.value)
   };
@@ -212,11 +212,9 @@ function MainScreen() {
     }
   },[grossRent, rentTax, imiCosts, condominiumCosts])
 
-  useEffect(() => {
-    
-  },[houseLocation, houseType])
 
-  const onEntryPaymentChange = (e:any) => {
+
+  const onEntryPaymentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const amount = e.target.value;
 
     if (!amount || amount.match(/^\d{1,}(\.\d{0,2})?$/)) {
@@ -260,7 +258,7 @@ function MainScreen() {
 
               <div className="labelSpacing">
                 <div className='side-by-side margin-right smallWidth'>
-                  <label htmlFor='entryPayment labelSpacing'>Valor de entrada</label>
+                  <label htmlFor='entryPayment'>Valor de entrada</label>
                   <div className="input-group">
                     <input type='text'
                            className='form-control'
@@ -273,7 +271,7 @@ function MainScreen() {
                 </div>
 
                 <div className='side-by-side smallWidth'>
-                  <label htmlFor='entryPaymentPercentage labelSpacing'>Percentagem de entrada</label>
+                  <label htmlFor='entryPaymentPercentage'>Percentagem de entrada</label>
                   <div className="input-group">
                     <input type='text'
                            className='form-control'
@@ -287,7 +285,7 @@ function MainScreen() {
               </div>
 
               <div className="labelSpacing">
-              <label htmlFor='oneTimeCosts labelSpacing'>Custos Burocráticos (IMT/IS/Escritura/Crédito)</label>
+              <label htmlFor='oneTimeCosts'>Custos Burocráticos (IMT/IS/Escritura/Crédito)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -300,7 +298,7 @@ function MainScreen() {
               </div>
 
               <div className="labelSpacing">
-              <label htmlFor='monthlyCosts labelSpacing'>Custos Mensais (seguros)</label>
+              <label htmlFor='monthlyCosts'>Custos Mensais (seguros)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -355,7 +353,7 @@ function MainScreen() {
               </OverlayTrigger>
 
               <div className="labelSpacing">
-              <label htmlFor='anualCosts labelSpacing'>Custos Anuais (Manutenção/Desocupação)</label>
+              <label htmlFor='anualCosts'>Custos Anuais (Manutenção/Desocupação)</label>
               <div className="input-group">
                 <input type='text'
                        className='form-control'
@@ -376,7 +374,7 @@ function MainScreen() {
               </div>
 
               <div className="labelSpacing">
-              <label htmlFor='houseType labelSpacing'>Destino da habitação</label>
+              <label htmlFor='houseType'>Destino da habitação</label>
               <Form.Select name='houseType' onChange={(e) => onChangeHouseType(e)} value={houseType}>
                 <option value={HouseType.HabitacaoPropriaPermanente}>Habitação própria e permanente</option>
                 <option value={HouseType.HabitacaoSecundariaOuArrendamento}>Habitação Secundária</option>
@@ -421,7 +419,7 @@ function MainScreen() {
                        className='form-control'
                        name='numberOfPayments'
                        value={numberOfPayments}
-                       onChange={e => setNumberOfPayments(e.target.value)}
+                       onChange={e => onAmountChange(e, setNumberOfPayments)}
                 />
                 <span className="input-group-text"> # </span>
               </div>
@@ -520,7 +518,7 @@ function MainScreen() {
                       className='form-control'
                       name='rentTax'
                       value={rentTax}
-                      onChange={e => setRentTax(e.target.value)}
+                      onChange={e => onAmountChange4(e, setRentTax)}
                />
                <span className="input-group-text"> % </span>
              </div>
